@@ -24,6 +24,7 @@ public class ContactPicker extends Activity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
+    private static final int PICK_CONTACT = 1;
     private GoogleApiClient client;
 
     public ContactPicker() {
