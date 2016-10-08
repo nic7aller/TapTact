@@ -12,7 +12,7 @@ import android.widget.Toast;
 public class NFCBeaming extends Activity {
 
     private NfcAdapter nfcChip;
-    private CharSequence noNFCMessage = "Please turn on NFC and Android Beam in Settings";
+    private final CharSequence NO_NFC_TEXT = "Please turn on NFC and Android Beam in Settings";
 
     public NFCBeaming() {
         nfcChip = NfcAdapter.getDefaultAdapter(this);
@@ -25,8 +25,16 @@ public class NFCBeaming extends Activity {
 
     private void toastIfNotEnabled() {
         if (isNFCNotEnabled()) {
-            Toast toast = Toast.makeText(getApplicationContext(), noNFCMessage, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), NO_NFC_TEXT, Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    public boolean doWhenTapButtonPressed() {
+        boolean nfcEnabled = !isNFCNotEnabled();
+        if (nfcEnabled) {
+
+        }
+        return nfcEnabled;
     }
 }
