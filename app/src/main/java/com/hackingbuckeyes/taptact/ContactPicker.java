@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.preference.PreferenceManager;
 import android.database.Cursor;
+import android.support.v7.app.AppCompatActivity;
 
 
 import com.google.android.gms.appindexing.Action;
@@ -19,7 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
  * Pick the contact that will be used for beaming to another device.
  */
 
-public class ContactPicker extends Activity {
+public class ContactPicker extends AppCompatActivity {
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -32,7 +33,7 @@ public class ContactPicker extends Activity {
 
     }
 
-    public NdefRecord getContact() {
+    public NdefRecord chooseContact() {
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
 
