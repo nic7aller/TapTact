@@ -9,6 +9,7 @@ import android.provider.ContactsContract;
 import android.preference.PreferenceManager;
 import android.database.Cursor;
 
+
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -60,7 +61,8 @@ public class ContactPicker extends Activity {
                             phones.moveToFirst();
                             String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             // Toast.makeText(getApplicationContext(), cNumber, Toast.LENGTH_SHORT).show();
-                            setCn(cNumber);
+                            //setCn(cNumber);
+                            System.out.print("cNumber has: "+cNumber);
                         }
                     }
                 }
