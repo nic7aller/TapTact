@@ -9,6 +9,10 @@ import android.provider.ContactsContract;
 import android.preference.PreferenceManager;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 import com.google.android.gms.appindexing.Action;
@@ -26,9 +30,12 @@ public class ContactPicker extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private static final int PICK_CONTACT = 1;
     private GoogleApiClient client;
+
     private NdefRecord contact;
+
+    private static final int PICK_CONTACT = 1;
+    private final CharSequence CONTACT_ERROR = "An error has occurred, sorry about that boss";
 
     public ContactPicker() {
 
@@ -44,34 +51,13 @@ public class ContactPicker extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data){ super.onActivityResult(reqCode, resultCode, data);
-
-        switch(reqCode)
-        {
-            case (PICK_CONTACT):
-                if (resultCode == Activity.RESULT_OK)
-                {
-                    Uri contactData = data.getData();
-                    Cursor c = managedQuery(contactData, null, null, null, null);
-                    if (c.moveToFirst())
-                    {
-                        String id = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-
-                        String hasPhone =
-                                c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
-
-                        if (hasPhone.equalsIgnoreCase("1"))
-                        {
-                            Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,null, null);
-                            phones.moveToFirst();
-                            String cNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            // Toast.makeText(getApplicationContext(), cNumber, Toast.LENGTH_SHORT).show();
-                            //setCn(cNumber);
-                            System.out.print("cNumber has: "+cNumber);
-                        }
-                    }
-                }
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
+            Uri contactURI = data.getData();
+            contact = NdefRecord.createUri(contactURI);
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), CONTACT_ERROR, Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
