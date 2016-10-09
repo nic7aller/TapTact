@@ -1,18 +1,19 @@
 package com.hackingbuckeyes.taptact;
 
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
     private NfcAdapter nfcChip;
     private final CharSequence NO_NFC_TEXT = "Please turn on NFC and Android Beam in Settings";
 
@@ -20,20 +21,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        nfcChip = NfcAdapter.getDefaultAdapter(this);
+        toastIfNotEnabled();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+    private boolean isNFCNotEnabled() {
+        return !nfcChip.isEnabled() || !nfcChip.isNdefPushEnabled();
+    }
 
-            }
-        });
-        */
+    private void toastIfNotEnabled() {
+        if (isNFCNotEnabled()) {
+            Toast toast = Toast.makeText(getApplicationContext(), NO_NFC_TEXT, Toast.LENGTH_LONG);
+            toast.show();
+            startActivity(new Intent(Settings.ACTION_NFCSHARING_SETTINGS));
+        }
+    }
+
+    public NdefMessage createNdefMessage (NfcEvent event) {
+        return new NdefMessage((new ContactPicker()).getContact());
     }
 
     @Override

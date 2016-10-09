@@ -28,18 +28,23 @@ public class ContactPicker extends AppCompatActivity {
      */
     private static final int PICK_CONTACT = 1;
     private GoogleApiClient client;
+    private NdefRecord contact;
 
     public ContactPicker() {
 
     }
 
-    public NdefRecord chooseContact() {
+    public NdefRecord getContact() {
+        return contact;
+    }
+
+    public void chooseContact() {
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, PICK_CONTACT);
-
-        return null; // change null
     }
-    @Override public void onActivityResult(int reqCode, int resultCode, Intent data){ super.onActivityResult(reqCode, resultCode, data);
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data){ super.onActivityResult(reqCode, resultCode, data);
 
         switch(reqCode)
         {
@@ -69,6 +74,7 @@ public class ContactPicker extends AppCompatActivity {
                 }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
